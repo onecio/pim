@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ambiente Python Moderno no Linux (Ubuntu)</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 2rem;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h1, h2 {
+      color: #1a1a1a;
+    }
+    code, pre {
+      background-color: #eee;
+      padding: 0.5em;
+      border-radius: 5px;
+      font-family: monospace;
+    }
+    pre {
+      overflow-x: auto;
+    }
+    section {
+      margin-bottom: 3rem;
+    }
+    .dica {
+      background-color: #dff0d8;
+      border-left: 4px solid #3c763d;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    .alerta {
+      background-color: #f2dede;
+      border-left: 4px solid #a94442;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Configurando um Ambiente Python Moderno no Linux (Ubuntu)</h1>
+
+  <section>
+    <h2>1. Instalando o <code>uv</code> com <code>pipx</code></h2>
+    <p>
+      O <code>uv</code> é uma ferramenta moderna que substitui <code>pip</code>, <code>virtualenv</code> e <code>pip-tools</code> com foco em velocidade e eficiência.
+      Para instalá-lo de forma segura e global, o ideal é usar o <code>pipx</code>.
+    </p>
+
+    <h3>Instalando o pipx</h3>
+    <pre><code>sudo apt install pipx
+pipx ensurepath</code></pre>
+
+    <h3>Instalando o uv</h3>
+    <pre><code>pipx install uv</code></pre>
+
+    <div class="dica">
+      Após a instalação, feche e reabra o terminal. Se necessário, adicione manualmente o caminho do pipx ao seu PATH no <code>~/.bashrc</code> ou <code>~/.zshrc</code>.
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Gerenciando múltiplas versões do Python com <code>pyenv</code></h2>
+    <p>
+      O <code>pyenv</code> permite instalar e alternar entre diferentes versões do Python sem afetar o Python do sistema.
+      Isso evita erros e facilita projetos com versões distintas.
+    </p>
+
+    <h3>Instale as dependências</h3>
+    <pre><code>sudo apt update
+sudo apt install -y make build-essential libssl-dev zlib1g-dev \
+  libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
+  libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev \
+  libffi-dev liblzma-dev git</code></pre>
+
+    <h3>Instale o pyenv</h3>
+    <pre><code>curl https://pyenv.run | bash</code></pre>
+
+    <h3>Configure o shell</h3>
+    <p>Adicione ao final do seu arquivo <code>~/.bashrc</code>, <code>~/.zshrc</code> ou <code>~/.profile</code>:</p>
+    <pre><code>export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"</code></pre>
+
+    <p>Depois, recarregue o terminal:</p>
+    <pre><code>source ~/.bashrc   # ou source ~/.zshrc</code></pre>
+  </section>
+
+  <section>
+    <h2>3. Instalando e usando versões específicas do Python</h2>
+
+    <h3>Instalar uma versão</h3>
+    <pre><code>pyenv install 3.12.3
+pyenv install 3.10.14</code></pre>
+
+    <h3>Listar versões disponíveis</h3>
+    <pre><code>pyenv install --list</code></pre>
+
+    <h3>Definir a versão padrão</h3>
+    <p>Para todo o sistema do usuário:</p>
+    <pre><code>pyenv global 3.12.3</code></pre>
+
+    <p>Para um projeto específico (cria <code>.python-version</code>):</p>
+    <pre><code>pyenv local 3.10.14</code></pre>
+
+    <p>Somente para o terminal atual:</p>
+    <pre><code>pyenv shell 3.9.19</code></pre>
+  </section>
+
+  <section>
+    <h2>4. Verificação e boas práticas</h2>
+
+    <h3>Verificar a versão em uso</h3>
+    <pre><code>python --version
+which python
+pyenv version</code></pre>
+
+    <div class="dica">
+      Se o Python ainda parecer não mudar, verifique se o PATH está corretamente configurado e se o terminal foi reiniciado.
+    </div>
+  </section>
+
+  <section>
+    <h2>5. Corrigindo Launchers quebrados</h2>
+    <p>
+      Após trocar a versão do Python, alguns atalhos de sistema ou IDEs podem parar de funcionar corretamente.
+    </p>
+
+    <div class="alerta">
+      <strong>⚠️ Atenção:</strong> nunca substitua o Python do sistema (ex: <code>/usr/bin/python3</code>). Isso pode quebrar o Ubuntu!
+    </div>
+
+    <p>Para resolver:</p>
+    <ul>
+      <li>Use <code>pyenv global</code> para definir a versão desejada</li>
+      <li>Verifique arquivos <code>.desktop</code> de IDEs e editores</li>
+      <li>Configure corretamente o ambiente virtual no seu editor</li>
+    </ul>
+  </section>
+
+</body>
+</html>
